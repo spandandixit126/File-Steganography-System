@@ -1,9 +1,3 @@
-### Enrollment Number:-18012011018
-### Name:- Dixit Spandan Shrimannarayan
-### Class/Batch:- CE/AB-5 
-### Semester:- sem-7 
-### Year:- 2021-22
-
 # Abstract
 --
 Steganography is the process of hiding a secret audio/video/text within a larger one in such a way that someone cannot know the presence or contents of the hidden audio/video/text. The purpose of Steganography is to maintain secret communication between two parties. Using the LSB technique, which facilitates plain text hiding in an image as well as hiding files in an image.
