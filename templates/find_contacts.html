@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}Find Contacts{% endblock %}
+        </title>
+        <!-- External CSS/JS files -->
+        <link rel="stylesheet" type="text/css" href={% static 'find_contacts.css' %}>
+    </head>
+    <body onload="document.getElementById('find_contacts').setAttribute('class','nav-link active')">
+    <br/>
+    {% if user.is_authenticated %}
+        {% if user.extendedusers.comp_name == '' %} {# logged in, do not own, do not join #}
+            <div class="container">
+                <div class="main-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Find Contacts</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        {% include 'company_list.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            {% if user.extendedusers.own_comp == True %} {# logged in, own #}
+                <div class="container">
+                    <div class="main-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Company Name: {{ user.extendedusers.comp_name }}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            {% include 'company_details.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}  {# logged in,not own, joined company option #}
+                <div class="container">
+                    <div class="main-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Find Contacts</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            {% include 'company_details.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% include 'not_accessible.html' with title='Find Contacts' %}
+    {% endif %}
+    </body>
+    </html>
+{% endblock %}

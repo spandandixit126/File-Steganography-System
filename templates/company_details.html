@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Details</title>
+    <link rel="stylesheet" type="text/css" href={% static 'company_details.css' %}>
+
+</head>
+<body>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-8 col-lg-6">
+            <!-- Section Heading-->
+            <div class="section_heading text-center wow fadeInUp" data-wow-delay="0.2s"
+                 style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                <h3>Company: {{ user.extendedusers.comp_name }}</h3>
+                <p>List of Company Employees</p>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% for user in users %}
+            <!-- Single Advisor-->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s"
+                     style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                    <!-- Team Thumb-->
+                    <div style="height: 155px;max-width:250px;text-align: center;">
+                        {% include 'profile_image.html' %}
+                        <div style="width: 40px;height: 40px;float:right;
+                                            border-radius: 50px;position: relative;
+                                            alignment:right; margin-top: -45px; margin-right: 5px;">
+                            {% for company in user.company_set.all %}
+                                {% if company.verify == True %}
+                                    {% if user.extendedusers.p_pic == '' %}
+                                        <img src="static/verified.png" style="margin-top: 155px;"
+                                             alt="verified">
+                                    {% else %}
+                                        <img src="static/verified.png" alt="verified">
+                                    {% endif %}
+                                {% else %}
+                                    {% if user.extendedusers.p_pic == '' %}
+                                        <img src="static/do-not-disturb.png" style="margin-top: 155px;"
+                                             alt="not verified">
+                                    {% else %}
+                                        <img src="static/do-not-disturb.png" alt="not verified">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="single_advisor_details_info">
+                        <h6>{{ user.first_name }} {{ user.last_name }}
+                            {% if user.extendedusers.own_comp == True %}
+                                (Owner)
+                            {% endif %}
+                        </h6>
+                        <p class="designation">
+                            {% if user.extendedusers.p_desc != '' %}
+                                {{ user.extendedusers.p_desc }}
+                            {% else %}
+                                no description to display
+                            {% endif %}
+                        </p>
+                        <br/>
+                        {% if request.user.extendedusers.own_comp == True %}
+                            <a href="manage_users">
+                                {% for company in user.company_set.all %}
+                                    {% if company.verify == False %}
+                                        <input type="submit" value="Approve Request"
+                                               class="btn btn-outline-success btn-block">
+                                    {% endif %}
+                                {% endfor %}
+                            </a>
+                            <br/>
+                        {% endif %}
+                        {% if user == request.user %}
+                            <input type="submit" value="Disabled"
+                                   onclick="alert('you can not chat with yourself!');"
+                                   class="btn btn-outline-success btn-block">
+                        {% else %}
+                            {% for company in user.company_set.all %}
+                                {% if company.verify == False %}
+                                    <input type="submit" value="Private Chat(Disabled)"
+                                           onclick="alert('You are not verified by Admin/Owner of company...!');"
+                                           class="btn btn-outline-success btn-block">
+                                {% else %}
+                                    {% for comp in request.user.company_set.all %}
+                                        {% if comp.verify == False %}
+                                            <input type="submit" value="Private Chat(Disabled)"
+                                                   onclick="alert('You are not verified by Admin/Owner of company...!');"
+                                                   class="btn btn-outline-success btn-block">
+                                        {% else %}
+                                            <a href="group_chat">
+                                                <input type="submit" value="Join Private Chat"
+                                                       onclick="alert('redirecting to Dashboard!');"
+                                                       class="btn btn-outline-success btn-block">
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+{% load static %}
+<html>
+<head>
+    <!-- External Bootstrap files -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="icon" href="static/favicon.ico">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- External CSS/JS files -->
+    <link rel="stylesheet" type="text/css" href={% static 'base.css' %}>
+    <script type="text/javascript" src="{% static 'base.js' %}"></script>
+    <title>
+        {% block title %}{% endblock %} | File Steganography System
+    </title>
+</head>
+<body style="background-image:url('static/banner.jpg');  background-repeat: no-repeat;
+  background-size: cover;" onload="loading1()">
+
+<button class="btn btn-primary" id="load" type="button"
+        style="top:50%;left:50%;border-radius: 50px; position:absolute;display:none;z-index:100;">
+    <span class="spinner-border spinner-border" role="status" aria-hidden="true"></span>
+    <p class="text-lg">
+        Redirecting...
+    </p>
+</button>
+<button class="btn btn-info" id="load1" type="button"
+        style="top:50%;left:50%;position:absolute;display:none;z-index:100; border-radius: 50px;">
+    <span class="spinner-grow spinner-grow" role="status" aria-hidden="true"></span>
+    Loading...
+</button>
+{#<body style="background-color: #e74c3c">#}
+<div class="container" style="position: -webkit-sticky;position: sticky;top: -190px; z-index: 99;">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="content" class="content content-full-width">
+                <!-- begin profile -->
+                <div class="profile">
+                    <div class="profile-header">
+                        <!-- BEGIN profile-header-cover -->
+                        <div class="profile-header-cover"></div>
+                        <!-- END profile-header-cover -->
+                        <!-- BEGIN profile-header-content -->
+                        <div class="profile-header-content">
+                            <!-- BEGIN profile-header-img -->
+                            <div class="profile-header-img">
+                                {% include 'profile_image.html' %}
+                            </div>
+                            <!-- END profile-header-img -->
+                            <!-- BEGIN profile-header-info -->
+                            <div class="profile-header-info">
+                                {% if user.is_authenticated %}
+                                    <h4 class="m-t-10 m-b-5">{{ user.first_name }} {{ user.last_name }}</h4>
+                                    <p class="m-b-10">{{ user.email }}</p>
+                                    <p class="m-b-10">Last Logged on: {{ user.last_login|date|upper }} {{ user.last_login|time|upper }} (IST)</p>
+                                    <a href="account_settings" class="btn btn-xs btn-primary mb-2">Account Settings</a>
+                                {% else %}
+                                    <h4 class="m-t-10 m-b-5">Guest User</h4>
+                                    <p class="m-b-10">Please Login, to access all features!</p>
+                                    <a href="login" class="btn btn-xs btn-primary mb-2">Login Here!</a>
+                                {% endif %}
+                            </div>
+                            <!-- END profile-header-info -->
+                        </div>
+                        <!-- END profile-header-content -->
+                        <!-- BEGIN profile-header-tab -->
+                        <ul class="profile-header-tab nav nav-tabs">
+                            <li class="nav-item" title="Home">
+                                <a href="home" id="home" class="nav-link" data-toggle="tab">
+                                    <img src="/static/home.png" style="max-height: 30px; max-width: 30px;"
+                                         alt="home">&nbsp;Home
+                                </a>
+                            </li>
+                            {% if user.extendedusers.own_comp == True %}
+                                <li class="nav-item" title="manage_users">
+                                    <a href="manage_users" id="manage_users" class="nav-link" data-toggle="tab">
+                                        <img src="/static/request.png" style="max-height: 30px; max-width: 30px;"
+                                             alt="home">&nbsp;Manage Users
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item" title="Find Contacts">
+                                <a href="find_contacts" id="find_contacts" class="nav-link"
+                                   data-toggle="tab">
+                                    <img src="/static/find.png" style="max-height: 30px; max-width: 30px;"
+                                         alt="find contacts">&nbsp;Find
+                                    Contacts
+                                </a>
+                            </li>
+                            {% for company in request.user.company_set.all %}
+                                {% if company.verify == True %}
+                                    <li class="nav-item" title="Dashboard">
+                                        <a href="group_chat" id="group_chat" class="nav-link"
+                                           data-toggle="tab" onclick="loading()">
+
+                                            <img src="/static/dashboard.png" style="max-height: 30px; max-width: 30px;"
+                                                 alt="Dashboard">&nbsp;Dashboard
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            <li class="nav-item" title="About System">
+                                <a href="about_us" id="about_us" class="nav-link"
+                                   data-toggle="tab">
+                                    <img src="/static/about.png" style="max-height: 30px; max-width: 30px;"
+                                         alt="About">&nbsp;About
+                                    System
+                                </a>
+                            </li>
+
+                            {% if user.is_authenticated %}
+                                <label style="margin-top: 8px; font-weight: bolder;position:absolute;right:100px;">
+                                    Hello, {{ user }}!
+                                </label>
+
+                                <li class="nav-item" style="position:absolute;right:15px;top:-5px;">
+                                    <a href="logout" class="nav-link"
+                                       data-toggle="tab" title="Logout">
+                                        <img src="/static/logout.png" style="max-height: 30px; max-width: 30px;"
+                                             alt="logout">
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item" style="position:absolute;right:120px;top:-5px;" title="Login">
+                                    <a href="login"
+                                       class="nav-link"
+                                       data-toggle="tab">
+                                        <img src="/static/login.png" style="max-height: 30px; max-width: 30px;"
+                                             alt="login">&nbsp;Login
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="position:absolute;right:20px;top:-5px;" title="Register">
+                                    <a href="register"
+                                       class="nav-link"
+                                       data-toggle="tab">
+                                        <img src="/static/register.png" style="max-height: 30px; max-width: 30px;"
+                                             alt="register">&nbsp;Register
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <!-- END profile-header-tab -->
+                    </div>
+                </div>
+                <!-- end profile -->
+            </div>
+        </div>
+    </div>
+</div>
+{% block content %}
+
+{% endblock %}
+</body>
+</html>

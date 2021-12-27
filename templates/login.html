@@ -1,0 +1,82 @@
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="icon" href={% static 'favicon.ico' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'login_register.css' %}>
+{#    <link rel="stylesheet" type="text/css" href="/static/css/login_register.css">#}
+</head>
+<body>
+<div class="login-box">
+    <h2>Login</h2>
+    <form action="login" method="post" id="login_page">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>
+                    <div class="user-box">
+                        <input type="text" name="username" required="" style="width: 200px">
+                        <label>Username</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="password" name="password" required="">
+                        <label>Password</label>
+                    </div>
+                </th>
+                <th title="session will expire in 10 minutes of inactivity if not ticked">
+                <label><input name="remember_me" type="checkbox">Keep me logged in</label>
+                </th>
+                <th>
+                    <div style="text-align: center;margin-left: 100px">
+                        <a href="javascript:" type="submit"
+                           onclick="document.getElementById('login_page').submit();">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            submit
+                        </a>
+                        <script>
+                            function myFunction() {
+                                document.getElementById("login_page").submit();
+                            }
+                        </script>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <label style="color: white">Not Existing User?</label>
+                        <br/>
+                        <a style="height: 30px" href="register">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            Register Here!
+                        </a>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                {% include 'message.html' %}
+            </tr>
+        </table>
+        <br/>
+        <table align="right">
+            <tr>
+                <th>
+                    <label style="color: white;">Send Verification Link</label>
+                    <a style="height: 30px; width:120px; text-align: center;" href="verify_account">
+                        Click Now
+                    </a>
+                </th>
+                <th>
+                    <label style="color: white;">Forgot Your Password?</label>
+                    <a style="height: 30px; width:120px; text-align: center;" href="reset_password">
+                        Click Here
+                    </a>
+                </th>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connections</title>
+    <link rel="stylesheet" type="text/css" href={% static 'connections.css' %}>
+    <script type="text/javascript" src="{% static 'connections.js' %}"></script>
+</head>
+<body>
+{% include 'message_alert.html' %}
+{% if user.extendedusers.comp_name == '' %}
+
+    <form action="connections" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="text-align: center;">
+            <label>you are logged in with username: <b>{{ user.username }}</b></label>
+        </div>
+        <div style="color: red;">
+            {% for message in messages %}
+                {% if message.tags %}
+                    <script>alert("{{ message }}")</script>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="card-body pb-2">
+            If you Create Company Profile you are no longer able to edit Company information.
+            <br/><br/><br/>
+            <div class="form-group">
+                <label class="form-label"> Do you own/manage company?
+                </label>
+                <label class="switch">
+                    <input type="checkbox" id="chkbox" onchange="showfields()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="form-group" id="c_name" style="display: none;">
+                <label class="form-label">Enter your company name</label>
+                <input type="text" name="comp_name" id="comp_name"
+                       placeholder="Enter Company name is to register your company"
+                       class="form-control" required>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <input type="submit" name="connections" id="connections" style="display: none;" class="btn btn-primary px-4"
+                   value="Register Company">
+        </div>
+    </form>
+    <div style="text-align: center;">OR</div>
+    <hr class="my-4">
+    <br/><br/>
+    <div class="form-group">
+        <label class="form-label">Are you employer/employee of company?</label>&nbsp;
+        <a href="find_contacts">
+            <button action="find_contacts" class="btn btn-primary">Join Company</button>
+        </a>
+    </div>
+{% else %}
+    Dear User, You are no longer access to create company as you already created company.
+    <div class="card-body pb-2">
+        <div class="form-group" disabled="">
+            <label class="form-label"> User name:
+                <input type="text" value="{{ user.username }}"
+                       class="form-control" disabled></label>
+            <label class="form-label"> company name:
+                <input type="text" value="{{ user.extendedusers.comp_name }}"
+                       class="form-control" disabled></label>
+        </div>
+    </div>
+{% endif %}
+<br/>
+<br/>
+<br/>
+</body>
+</html>

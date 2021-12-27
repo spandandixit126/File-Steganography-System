@@ -1,0 +1,8 @@
+<link rel="icon" href="static/favicon.ico">
+
+{% autoescape off %}
+    Hi {{ user.username }},
+    Please click on the link below to confirm your registration:
+    Do not click on link if you did not send registration request!
+    http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

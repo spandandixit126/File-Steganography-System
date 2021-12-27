@@ -1,0 +1,98 @@
+<div class="messages">
+    <ul id="display">
+        <li class="sent">
+            {% include 'profile_image.html' %}
+            <p>Hi There!</p>
+        </li>
+        <li class="replies">
+            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
+            <p>You can reply to this conversation!</p>
+        </li>
+    </ul>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        setInterval(function () {
+            $.ajax({
+                type: 'GET',
+                url: "/get_messages_company/{{ request.user.extendedusers.comp_name }}/",
+                data: {'': '', addcsrfmiddlewaretoken: '{{ csrf_token }}',},
+                success: function (response) {
+                    console.log(response);
+                    $("#display").empty();
+                    for (var key in response.messages) {
+                        if (response.messages[key].F_usr == {{ request.user.id }}) {
+                            if("{{ user.extendedusers.p_pic }}" == "")
+                            {
+                            var temp = "<li class=\"sent\"><img src=\"static/profile.png\" alt=\"\"/><p>" +
+                                response.messages[key].data + "</p></li>";
+                            }
+                            else
+                            {
+                                var temp = "<li class=\"sent\"><img src=\"static/{{ request.user.extendedusers.p_pic }}\" alt=\"\"/><p>" +
+                                response.messages[key].data + "</p></li>";
+                            }
+
+
+                        } else {
+                            if (response.messages[key].F_usr_name == '') {
+                                var temp = "<li class=\"replies\"><img src=\"static/profile.png\" alt=\"\"/><p>" +
+                                    response.messages[key].data + "</p></li>";
+                            } else {
+                                var temp = "<li class=\"replies\"><img src=\"static/" + response.messages[key].F_usr_name + ".jpg\" alt=\"\"/><p>" +
+                                    response.messages[key].data + "</p></li>";
+                            }
+                        }
+                        $("#display").append(temp);
+                    }
+                },
+                error: function (response) {
+                    alert('An error occured! It may happen even you are offline! try to reconnect with internet!')
+                }
+            });
+        }, 5000);
+    })
+</script>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>temp</title>#}
+{#</head>#}
+{#<body>#}
+{#<div class="messages" id="display">#}
+{#    <ul>#}
+{#        <li class="sent">#}
+{#            <p>Hi There!</p>#}
+{#        </li>#}
+{#        <li class="replies">#}
+{#            <p>You can reply to this conversation!</p>#}
+{#        </li>#}
+{#    </ul>#}
+{#</div>#}
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>#}
+{#<script type="text/javascript">#}
+{#    $(document).ready(function () {#}
+{#        setInterval(function () {#}
+{#            $.ajax({#}
+{#                type: 'GET',#}
+{#                url: "/get_messages_company/{{ request.user.extendedusers.comp_name }}/",#}
+{#                data:{ '': '', addcsrfmiddlewaretoken:'{{ csrf_token }}',},#}
+{#                success: function (response) {#}
+{#                    console.log(response);#}
+{#                    $("#display").empty();#}
+{#                    for (var key in response.messages) {#}
+{#                        var temp = "<div class='messages'><ul><li class=\"sent\">" + response.messages[key].data + "</li></ul></div>";#}
+{#                        $("#display").append(temp);#}
+{#                    }#}
+{#                },#}
+{#                error: function (response) {#}
+{#                    alert('An error occured')#}
+{#                }#}
+{#            });#}
+{#        }, 10000);#}
+{#    })#}
+{#</script>#}
+{#</body>#}
+{#</html>#}

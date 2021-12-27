@@ -1,0 +1,38 @@
+{% load static %}
+{% block content %}
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <link rel="icon" href="static/favicon.ico">
+        <meta charset="UTF-8">
+        <title>Access Denied! | File Steganography System</title>
+             <link rel="stylesheet" type="text/css" href={% static 'modal_card.css' %}>
+    </head>
+    <div class="container">
+        <div class="main-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="modal-header">
+                            <h4 style="text-align: center;" class="modal-title">Access Denied to {{ title }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                Webpage you are trying to connect is not available to you!<br/>
+                                It may happen if:<br/>
+                                1)You are not logged in<br/>
+                                2)Because You are not verified by user to access that functionality.<br/>
+                                3)You are not have enough rights/permissions to connect to this page<br/>
+                                kindly contact to Owner/manager of
+                                company to access the feature
+                                <img src="../static/Sorry.png" style="max-width: 100%;"
+                                     alt="trouble loading image file">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

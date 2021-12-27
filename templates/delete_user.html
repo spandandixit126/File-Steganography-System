@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete User | File Steganography System</title>
+    <script>
+        function delete_account() {
+            let bool = confirm('Are you sure to Proceed? It will delete Your account and all information associated with it.');
+            return bool === true;
+        }
+    </script>
+</head>
+<body>
+<form action="delete_user" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="text-align: center;">
+        <label>you are logged in with username: <b>{{ user.username }}</b></label>
+    </div>
+    {% include 'message_alert.html' %}
+    <div class="card-body pb-2">
+        <div class="form-group">
+            <label class="form-label">Are You Sure You want to delete This Account?</label><br/>
+            <label class="form-label">don't delete account if you own a company!</label>
+        </div>
+    </div>
+    <input type="submit" name="delete" class="btn btn-primary px-4"
+           value="Delete Account"
+           id="account-delete-user-button"
+           onclick="return delete_account()">
+    <br/>
+    <br/>
+    <br/>
+</form>
+</body>
+</html>
